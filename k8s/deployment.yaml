@@ -1,0 +1,27 @@
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: python-app
+    spec:
+      replicas: 2
+      selector:
+        matchLabels:
+          app: python-app
+      template:
+        metadata:
+          labels:
+            app: python-app
+        spec:
+          containers:
+          - name: python-app
+            # REPLACE WITH YOUR ACTUAL IMAGE URL
+            image: us-central1-docker.pkg.dev/sre-portfolio-project-481507/sre-repo/python-app:v2
+            ports:
+            - containerPort: 8080
+            resources:
+              requests:
+                cpu: "250m"
+                memory: "256Mi"
+              limits:
+                cpu: "500m"
+                memory: "512Mi"
