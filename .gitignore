@@ -28,4 +28,6 @@
     .terraformrc
     terraform.rc
 
+    # Secrets - Explicitly ignore the key file in any directory
+    **/sa-key.json
     *.json
