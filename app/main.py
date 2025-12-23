@@ -141,4 +141,5 @@ def trigger_error():
 if __name__ == "__main__":
     # app.run starts the internal Flask web server.
     # We listen on 0.0.0.0 to accept connections from outside the container.
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+    # CRITICAL: debug=False for production! debug=True breaks Prometheus metrics.
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
