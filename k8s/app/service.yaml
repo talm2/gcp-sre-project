@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-app-service
+  namespace: default
+  labels: 
+    app: python-app
+  annotations:
+    cloud.google.com/l4-rbs: "enabled" # Force L4 Load Balancer to use NEGs (bypass nodes)
+spec:
+  selector:
+    app: python-app
+  ports:
+    - protocol: TCP
+      name: web
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer

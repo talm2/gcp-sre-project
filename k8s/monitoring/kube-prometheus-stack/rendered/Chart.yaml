@@ -1,0 +1,9 @@
+apiVersion: v2
+name: kube-prometheus-stack
+description: kube-prometheus-stack collects Kubernetes manifests, Grafana dashboards, and Prometheus rules combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator.
+version: 56.0.0 # Approximate version
+appVersion: v0.71.0
+home: https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+sources:
+  - https://github.com/prometheus-community/helm-charts
+

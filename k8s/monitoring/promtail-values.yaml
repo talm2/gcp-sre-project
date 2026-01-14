@@ -1,0 +1,31 @@
+config:
+  lokiAddress: http://loki-gateway:80/loki/api/v1/push
+  clients:
+    - url: http://loki-gateway:80/loki/api/v1/push
+
+# Disable the default volumes that Autopilot hates
+defaultVolumes: []
+defaultVolumeMounts: []
+
+# Re-add ONLY the safe volumes
+extraVolumes:
+  - name: pods
+    hostPath:
+      path: /var/log/pods
+  - name: positions
+    emptyDir: {}
+
+extraVolumeMounts:
+  - name: pods
+    mountPath: /var/log/pods
+    readOnly: true
+  - name: positions
+    mountPath: /run/promtail
+
+# Security Context for Autopilot
+containerSecurityContext:
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsUser: 0 # Needed for log reading, Autopilot usually allows root for this specific purpose if capabilities are dropped
+
+

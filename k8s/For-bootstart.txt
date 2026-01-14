@@ -1,0 +1,38 @@
+# 1. Add repositories
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+# 2. Create a namespace for monitoring
+kubectl create namespace monitoring
+
+# 3. Install the Core Stack (Prometheus + Grafana)
+helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --set grafana.adminPassword='admin' \
+  --set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false \
+  --set nodeExporter.enabled=false \
+  --set prometheus-node-exporter.enabled=false \
+  --set kubeControllerManager.enabled=false \
+  --set kubeScheduler.enabled=false \
+  --set kubeEtcd.enabled=false \
+  --set kubeProxy.enabled=false \
+  --set coreDns.enabled=false
+
+
+helm install loki grafana/loki \
+  --namespace monitoring \
+  --set deploymentMode=SingleBinary \
+  --set loki.auth_enabled=false \
+  --set loki.commonConfig.replication_factor=1 \
+  --set loki.storage.type=filesystem \
+  --set loki.schemaConfig.configs[0].object_store=filesystem \
+  --set read.replicas=0 \
+  --set write.replicas=0 \
+  --set backend.replicas=0
+
+
+
+  helm install promtail grafana/promtail \
+  --namespace monitoring \
+  -f gcp-sre-project/k8s/monitoring/promtail-values.yaml

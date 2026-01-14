@@ -1,5 +1,6 @@
     # Local .terraform directories
-    **/.terraform/*
+.terraform/
+**/.terraform/
     
     # .tfstate files
     *.tfstate
@@ -8,26 +9,32 @@
     # Crash log files
     crash.log
     
-    # Exclude all .tfvars files, which are likely to contain sensitive data, such as
-    # password, private keys, and other secrets. Cautiously use -var-file command line argument,
-    # specifying a tfvars file that are not checked in to git.
+# Exclude all .tfvars files
     *.tfvars
     *.tfvars.json
     
-    # Ignore override files as they are usually used for local customizations
+# Ignore override files
     override.tf
     override.tf.json
     *_override.tf
     *_override.tf.json
     
-    # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
-    # example: *tfplan*
+# Include tfplan files
     *.tfplan
     
     # Ignore CLI configuration files
     .terraformrc
     terraform.rc
 
-    # Secrets - Explicitly ignore the key file in any directory
-    **/sa-key.json
-    *.json
+# Secrets
+**/sa-key.json
+*.json
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

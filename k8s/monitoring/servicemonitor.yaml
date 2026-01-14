@@ -1,0 +1,29 @@
+# ServiceMonitor tells the Prometheus Operator to scrape metrics from a specific set of services.
+# It decouples the monitoring configuration from the Prometheus server itself.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: python-app-monitor
+  namespace: monitoring # We place the monitor in the same namespace as Prometheus
+  labels:
+    # This label is CRITICAL. Prometheus Operator only picks up monitors that match its 'serviceMonitorSelector'.
+    # By default, it looks for monitors matching the release name.
+    release: kube-prometheus-stack 
+spec:
+  # The selector defines WHICH services to scrape based on their labels.
+  # We are targeting our Python app service.
+  selector:
+    matchLabels:
+      app: python-app
+  
+  # Defines WHICH namespace(s) to look for the services in.
+  namespaceSelector:
+    matchNames:
+      - default # Our app is in the 'default' namespace
+  
+  # Defines the endpoint (port and path) where metrics are exposed.
+  endpoints:
+  - port: web # This matches the name we just gave to the port in service.yaml
+    path: /metrics
+    interval: 15s # How often to scrape. 15s is standard for production.
+
