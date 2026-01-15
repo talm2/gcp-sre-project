@@ -41,7 +41,7 @@ This document tracks the progress of building a production-grade SRE environment
 - [ ] **Migrations:** Implement a DB migration job (Flyway/Alembic) in the pipeline.
 
 ## Phase 5: Reliability & Scaling (The Muscles) ⏳
-- [ ] **Probes:** Configure Liveness & Readiness Probes in `deployment.yaml`.
+- [ ] **Prob es:** Configure Liveness & Readiness Probes in `deployment.yaml`.
 - [ ] **Pod Autoscaling (HPA):** Implement HPA based on CPU/Memory usage.
 - [ ] **Event Autoscaling (KEDA):** Scale pods based on external events (e.g., HTTP traffic or Queue depth).
 - [ ] **Optional:** Migrate to GKE Standard & Implement Karpenter/Node Scaling.
@@ -52,3 +52,4 @@ This document tracks the progress of building a production-grade SRE environment
 - [ ] **Ingress:** Deploy **GCP Native Ingress** (L7 Global Load Balancer).
 - [ ] **DNS:** Configure External DNS / TLS Certificates.
 - [ ] **Refactoring:** Convert flat Terraform files into reusable **Terraform Modules**.
+- [ ] **Refactoring:** re-install env for karpenter.

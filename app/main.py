@@ -3,6 +3,52 @@ import os
 import logging
 from pythonjsonlogger import jsonlogger
 from prometheus_flask_exporter import PrometheusMetrics
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.sdk.resources import Resource
+
+
+'''
+==========================================
+OpenTelemetry Configuration
+==========================================
+1. Resource: We define the identity of this service.
+   Tempo will show this name ("python-app") in the UI.
+'''
+resource = Resource(attributes={
+    "service.name": "python-app",
+    "service.version": "1.0.0"
+})
+
+'''
+2. Tracer Provider:
+   This is the engine that generates traces. We initialize it with our Resource identity.
+'''
+trace.set_tracer_provider(TracerProvider(resource=resource))
+
+'''
+3. OTLP Exporter:
+   This defines WHERE to send the traces.
+   We use an environment variable 'OTEL_EXPORTER_OTLP_ENDPOINT' so we can configure it in Kubernetes.
+   Default is 'http://tempo:4317' (The K8s Service address).
+   insecure=True is used because we are inside the cluster (no SSL/TLS needed).
+'''
+otlp_endpoint = os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT", "http://tempo:4317")
+otlp_exporter = OTLPSpanExporter(endpoint=otlp_endpoint, insecure=True)
+
+'''
+4. Span Processor:
+   We use a 'BatchSpanProcessor'.
+   Instead of sending a network request for every single span (slow),
+   it collects them in memory and sends them in batches (fast).
+'''
+span_processor = BatchSpanProcessor(otlp_exporter)
+trace.get_tracer_provider().add_span_processor(span_processor)
+
+
 
 '''
 # ==========================================
@@ -15,6 +61,21 @@ from prometheus_flask_exporter import PrometheusMetrics
 # 'app' is the central object that represents our web application.
 '''
 app = Flask(__name__)
+
+
+'''
+==========================================
+Auto-Instrumentation
+==========================================
+This magic line wraps our Flask application.
+It automatically intercepts every incoming HTTP request and creates a Span.
+It records:
+- HTTP Method (GET/POST)
+- Status Code (200/500)
+- URL Path
+- Duration (Latency)
+'''
+FlaskInstrumentor().instrument_app(app)
 
 '''
 ==========================================
@@ -93,14 +154,26 @@ def log_request(response):
 
     # We log the event with extra "Metadata" fields.
     # These become top-level keys in the JSON log.
+    '''
+    Trace Correlation:
+    We get the current Trace ID from OpenTelemetry.
+    If a trace is active, we get a 32-character hex string.
+    If not, trace_id is 0.
+    '''
+    current_span = trace.get_current_span()
+    trace_id = current_span.get_span_context().trace_id
+    # Convert trace_id to hex string, or None if invalid (0)
+    trace_id_hex = format(trace_id, '032x') if trace_id != 0 else None
+
     logger.info(
         "Request processed",
         extra={
-            "method": request.method,           # HTTP Method (GET, POST)
-            "path": request.path,               # The URL path (e.g., / or /error)
-            "status": response.status_code,     # The HTTP Status (200, 404, 500)
-            "hostname": os.uname()[1],          # The Pod Name (Identity of the container)
-            "ip": request.remote_addr           # The IP address of the caller
+            "method": request.method,
+            "path": request.path,
+            "status": response.status_code,
+            "hostname": os.uname()[1],
+            "ip": request.remote_addr,
+            "trace_id": trace_id_hex  # Add Trace ID to logs!
         }
     )
     return response

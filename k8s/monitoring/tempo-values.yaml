@@ -1,0 +1,44 @@
+# "Single Binary" mode is the lightest way to run Tempo
+# It combines all components (ingester, querier, etc.) into one pod.
+
+tempo:
+  repository: grafana/tempo
+  tag: 2.3.1
+  
+  # Disable S3/GCS and use local filesystem (PVC)
+  storage:
+    trace:
+      backend: local
+      local:
+        path: /var/tempo/traces
+      wal:
+        path: /var/tempo/wal
+
+  # Disable Multitenancy for simplicity
+  multitenancy:
+    enabled: false
+
+# Configure the Persistent Volume for traces
+persistence:
+  enabled: true
+  storageClassName: standard # Use HDD to save SSD quota
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+
+# Resource limits - Keep it LEAN
+resources:
+  requests:
+    cpu: 50m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+# Disable Minio (we use local filesystem)
+minio:
+  enabled: false
+
+# Disable Jaeger UI (we use Grafana for visualization)
+jaeger-query:
+  enabled: false
