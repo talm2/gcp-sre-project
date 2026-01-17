@@ -14,10 +14,14 @@
         spec:
           containers:
           - name: python-app
-            # REPLACE WITH YOUR ACTUAL IMAGE URL
             image: us-central1-docker.pkg.dev/sre-portfolio-project-481507/sre-repo/python-app:v2
             ports:
             - containerPort: 8080
+            env: 
+            - name: PORT
+              value: "8080"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://tempo.monitoring.svc.cluster.local:4317"
             resources:
               requests:
                 cpu: "250m"
