@@ -1,0 +1,28 @@
+root@tal-wsl ~ $ k get pods -n default -owide
+NAME                          READY   STATUS    RESTARTS   AGE     IP           NODE                                                  NOMINATED NODE   READINESS GATES
+python-app-55875d9b7d-9hmkp   1/1     Running   0          2d21h   10.1.0.140   gk3-sre-portfolio-project-4815-pool-6-45006e0b-z25k   <none>           1/1
+python-app-55875d9b7d-gbqpt   1/1     Running   0          2d21h   10.1.0.141   gk3-sre-portfolio-project-4815-pool-6-45006e0b-z25k   <none>           1/1
+root@tal-wsl ~ $
+root@tal-wsl ~ $
+root@tal-wsl ~ $
+root@tal-wsl ~ $ k get pods -n monitoring -owide
+NAME                                                       READY   STATUS    RESTARTS   AGE     IP           NODE                                                  NOMINATED NODE   READINESS GATES
+alertmanager-kube-prometheus-stack-alertmanager-0          2/2     Running   0          4d22h   10.1.0.78    gk3-sre-portfolio-projec-nap-1nyabja5-579f2484-9j69   <none>           <none>
+kube-prometheus-stack-grafana-766d4c8f98-pbzml             3/3     Running   0          4d22h   10.1.0.5     gk3-sre-portfolio-project-4815-pool-6-1bd1c62e-5bm8   <none>           <none>
+kube-prometheus-stack-kube-state-metrics-f548946fc-gmqjd   1/1     Running   0          4d22h   10.1.0.77    gk3-sre-portfolio-projec-nap-1nyabja5-579f2484-9j69   <none>           <none>
+kube-prometheus-stack-operator-8595dc58c5-pxnrv            1/1     Running   0          4d22h   10.1.0.76    gk3-sre-portfolio-projec-nap-1nyabja5-579f2484-9j69   <none>           <none>
+loki-0                                                     2/2     Running   0          4d22h   10.1.0.74    gk3-sre-portfolio-projec-nap-1nyabja5-579f2484-9j69   <none>           <none>
+loki-canary-74p9d                                          1/1     Running   0          4d22h   10.1.0.82    gk3-sre-portfolio-projec-nap-1nyabja5-579f2484-9j69   <none>           <none>
+loki-canary-8r7bl                                          1/1     Running   0          4d22h   10.1.0.6     gk3-sre-portfolio-project-4815-pool-6-1bd1c62e-5bm8   <none>           <none>
+loki-canary-bptlc                                          1/1     Running   0          4d21h   10.1.0.131   gk3-sre-portfolio-project-4815-pool-6-45006e0b-z25k   <none>           <none>
+loki-gateway-8fd5688ff-crzhf                               1/1     Running   0          4d21h   10.1.0.83    gk3-sre-portfolio-projec-nap-1nyabja5-579f2484-9j69   <none>           <none>
+prometheus-kube-prometheus-stack-prometheus-0              2/2     Running   0          4d21h   10.1.0.11    gk3-sre-portfolio-project-4815-pool-6-1bd1c62e-5bm8   <none>           <none>
+promtail-d7cfz                                             1/1     Running   0          4d21h   10.1.0.133   gk3-sre-portfolio-project-4815-pool-6-45006e0b-z25k   <none>           <none>
+promtail-kgj9l                                             1/1     Running   0          5d17h   10.1.0.71    gk3-sre-portfolio-projec-nap-1nyabja5-579f2484-9j69   <none>           <none>
+promtail-qrfpv                                             1/1     Running   0          4d22h   10.1.0.7     gk3-sre-portfolio-project-4815-pool-6-1bd1c62e-5bm8   <none>           <none>
+tempo-0                                                    1/1     Running   0          4d21h   10.1.0.135   gk3-sre-portfolio-project-4815-pool-6-45006e0b-z25k   <none>           <none>
+root@tal-wsl ~ $
+
+
+
+

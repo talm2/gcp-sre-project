@@ -8,13 +8,13 @@ loki:
     type: 'filesystem'
   schemaConfig:
     configs:
-    - from: 2024-04-01
-      store: tsdb
-      object_store: filesystem
-      schema: v13
-      index:
-        prefix: index_
-        period: 24h
+      - from: 2024-04-01
+        store: tsdb
+        object_store: filesystem
+        schema: v13
+        index:
+          prefix: index_
+          period: 24h
   filesystem:
     chunks_directory: /var/loki/chunks
     rules_directory: /var/loki/rules
@@ -56,7 +56,7 @@ monitoring:
     enabled: false
     # Disable here to avoid duplication if using top-level
     lokiCanary:
-      enabled: false 
+      enabled: false
     grafanaAgent:
       installOperator: false
 
@@ -72,12 +72,12 @@ lokiCanary:
       memory: 50Mi
   # Allow running on the "defrag" node
   tolerations:
-  - key: "autoscaling.gke.io/defrag-candidate"
-    operator: "Exists"
-    effect: "PreferNoSchedule"
-  - key: "autoscaling.gke.io/defrag-candidate"
-    operator: "Exists"
-    effect: "NoSchedule"
+    - key: "autoscaling.gke.io/defrag-candidate"
+      operator: "Exists"
+      effect: "PreferNoSchedule"
+    - key: "autoscaling.gke.io/defrag-candidate"
+      operator: "Exists"
+      effect: "NoSchedule"
 
 backend:
   replicas: 0

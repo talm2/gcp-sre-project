@@ -14,7 +14,7 @@
         spec:
           containers:
           - name: python-app
-            image: us-central1-docker.pkg.dev/sre-portfolio-project-481507/sre-repo/python-app:v2
+            image: us-central1-docker.pkg.dev/sre-portfolio-project-481507/sre-repo/python-app:41608df40971f060e3e227eb7bdd21344acdad16
             ports:
             - containerPort: 8080
             env: 
@@ -24,7 +24,7 @@
               value: "http://tempo.monitoring.svc.cluster.local:4317"
             resources:
               requests:
-                cpu: "250m"
+                cpu: "2m"
                 memory: "256Mi"
               limits:
                 cpu: "500m"
