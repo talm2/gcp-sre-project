@@ -29,8 +29,8 @@ This document tracks the progress of building a production-grade SRE environment
 - [x] **Configuration:**
     - [x] Create **ServiceMonitor** to scrape app metrics.
     - [x] Configure **Promtail** to ship logs to Loki.
-- [ ] **Visualization:** Create "Golden Signals" Dashboard (RPS, Latency, Errors, Saturation).
-- [ ] **Visualization:** Create cluster capacity dashboard
+- [x] **Visualization:** Create "Golden Signals" Dashboard (RPS, Latency, Errors, Saturation).
+- [x] **Visualization:** Create cluster capacity dashboard
 - [ ] **Alerting:** Define SLIs/SLOs and configure Alertmanager.
 - [x] **Automation:** Create a `setup_cluster.sh` script to auto-install all Helm charts after cluster creation.
 
